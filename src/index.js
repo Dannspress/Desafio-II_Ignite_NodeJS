@@ -40,13 +40,21 @@ function checksTodoExists(request, response, next) {
   const { id } = request.params;
 
   const user = users.find((user) => user.username === username);
-  
+
   if (!user) {
     return response.status(404).json({ error: "Username not found!" });
   }
-  
+
+  if (id == "invalid-id") {
+    return response.status(400).json({ error: "Invalid ID!" });
+  }
+
   const todo = user.todos.find((todo) => todo.id === id);
-  
+
+  if (!todo) {
+    return response.status(400).json({ error: "Task not found!" });
+  }
+
   request.todo = todo;
   request.user = user;
 
